@@ -3,6 +3,12 @@ document.addEventListener("DOMContentLoaded", game);
 
 function game() {
 
+  // Define variables for timing and highscore
+  let startTime;
+  let endTime;
+  let bestTime = Number.POSITIVE_INFINITY; // Initialize with a large value
+  let isShuffled = false;
+
   // Data structure to hold positions of tiles
   var parentX = document.querySelector(".sliding-puzzle").clientHeight;
   var baseDistance = 34.5;
@@ -106,10 +112,39 @@ function game() {
     var tileNumber = event.target.innerHTML;
     moveTile(event.target);
 
+    if (isShuffled == true) {
+      // Record the start time when the player starts solving
+      startTime = new Date();
+      isShuffled = false;
+    }
     if (checkSolution()) {
       console.log("You win!");
+  
+      // Record the end time
+      endTime = new Date();
+      const duration = (endTime - startTime) / 1000; // Calculate duration in seconds
+  
+      // Update the best time if the current time is better
+      if (duration < bestTime) {
+        bestTime = duration;
+        // You can also update and display the best time on the page
+      }
+  
+      // You can save or display the current time and best time as needed
     }
   }
+  
+  // Example function to format seconds into a readable time format (MM:SS)
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  }
+
+  // Update the best time and current time display
+  document.querySelector("#best-time").textContent = formatTime(bestTime);
+  document.querySelector("#current-time").textContent = formatTime(duration);
+
 
   // Moves tile to empty spot
   // Returns error message if tile cannot be moved
@@ -212,6 +247,7 @@ function game() {
       shuffleTimeouts.push(setTimeout(shuffleLoop, shuffleDelay));
       shuffleCounter++;
     }
+    isShuffled = true;
   }
 
   var lastShuffled;
@@ -245,7 +281,7 @@ function game() {
 
   // Temporary function for solving puzzle.
   // To be reimplemented with a more sophisticated algorithm
-  solveTimeouts = []
+  let solveTimeouts = []
   function solve() {
     clearTimers(shuffleTimeouts);
 
@@ -256,6 +292,14 @@ function game() {
       console.log("started");
       solveTimeouts.push(setTimeout(moveTile, i*100, tiles[history.pop()-1], false));
     }
+    // Record the end time
+    endTime = new Date();
+    const duration = (endTime - startTime) / 1000; // Calculate duration in seconds
+
+    // Update and display the current time
+    document.querySelector("#current-time").textContent = formatTime(duration);
+
+    // Rest of your solve function
   }
 
 

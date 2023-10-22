@@ -2,7 +2,7 @@ body {
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 700;
   font-size: 24px;
-  background-color: #a9a9a9;
+  background-color: white;
   -webkit-tap-highlight-color: transparent;
   khtml-tap-highlight-color: transparent; }
 
@@ -51,7 +51,7 @@ body {
       transition-timing-function: ease;
       box-sizing: border-box; }
       .sliding-puzzle-figure .sliding-puzzle .tile.error {
-        background-color: #a9a9a9; }
+        background-color: white; }
 
 @media only screen and (max-width: 650px) {
   .sliding-puzzle-figure {
